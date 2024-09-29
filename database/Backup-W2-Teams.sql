@@ -42,3 +42,46 @@ CREATE TABLE IF NOT EXISTS public.account (
     account_type account_type NOT NULL DEFAULT 'Client'::account_type,
     CONSTRAINT account_pkey PRIMARY KEY (account_id)
 );
+
+
+-- 88888888888888888888888888888888888888
+-- 88888888888888888888888888888888888888
+-- STARK QUERY (TASK 2): ****************
+-- 88888888888888888888888888888888888888
+-- 88888888888888888888888888888888888888
+
+
+-- 1. Insert Tony Stark's record into the account table
+INSERT INTO account (account_firstname, account_lastname, account_email, account_password)
+VALUES ('Tony', 'Stark', 'tony@starkent.com', 'Iam1ronM@n');
+-- Run the above query first to add Tony Stark to the table.
+
+-- 2. Modify Tony Stark's account type to 'Admin'
+UPDATE account
+SET account_type = 'Admin'
+WHERE account_email = 'tony@starkent.com';
+-- After the insertion, run this query to change Tony Stark's account type.
+
+-- 3. Delete Tony Stark's record from the database
+DELETE FROM account
+WHERE account_email = 'tony@starkent.com';
+-- Finally, run this to delete Tony Stark from the table.
+
+-- 4. Update the GM Hummer description to 'a huge interior'
+UPDATE inventory
+SET inv_description = REPLACE(inv_description, 'small interiors', 'a huge interior')
+WHERE inv_make = 'GM' AND inv_model = 'Hummer';
+-- Use this query to modify the GM Hummer description.
+
+-- 5. Select records from the inventory and classification tables for the 'Sport' category
+SELECT i.inv_make, i.inv_model, c.classification_name
+FROM inventory i
+INNER JOIN classification c ON i.classification_id = c.classification_id
+WHERE c.classification_name = 'Sport';
+-- Run this to fetch make and model for 'Sport' category inventory.
+
+-- 6. Update the inv_image and inv_thumbnail paths for all records
+UPDATE inventory
+SET inv_image = REPLACE(inv_image, '/images/', '/images/vehicles/'),
+    inv_thumbnail = REPLACE(inv_thumbnail, '/images/', '/images/vehicles/');
+-- Run this query to update file paths for all records in the inventory.
