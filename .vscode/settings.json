@@ -1,0 +1,16 @@
+{
+    "sqltools.connections": [
+        {
+            "pgOptions": {
+                "ssl": {
+                    "rejectUnauthorized": true
+                }
+            },
+            "previewLimit": 50,
+            "server": "localhost",
+            "driver": "PostgreSQL",
+            "name": "render.com",
+            "connectString": "postgresql://mattdb_v3go_user:37r7hfMZDNPYAISU4ZvqUBHsyEEnYf1u@dpg-crr0hpbv2p9s73e92s40-a.oregon-postgres.render.com/mattdb_v3go"
+        }
+    ]
+}
