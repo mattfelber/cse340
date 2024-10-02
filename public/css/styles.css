@@ -1,54 +1,156 @@
+/* Mobile-first styling */
 body {
-  font-family: Arial, sans-serif;
+  font-family: 'Arial', sans-serif;
   margin: 0;
   padding: 0;
-}
-
-.header {
-  background-color: #333;
-  color: white;
-  padding: 10px 0;
-  text-align: center;
-}
-
-.nav {
-  list-style: none;
-  padding: 0;
-  background-color: #444;
-  overflow: hidden;
-  text-align: center;
-}
-
-.nav li {
-  display: inline;
-  margin-right: 20px;
-}
-
-.nav li a {
-  color: white;
-  text-decoration: none;
-  font-size: 18px;
-}
-
-.hero-section {
-  text-align: center;
   background-color: #f4f4f4;
-  padding: 20px;
 }
 
-.hero-image {
-  max-width: 100%;
-  height: auto;
+#wrapper {
+  padding: 15px;
 }
 
-.about-section {
-  padding: 20px;
+/* Header and Navigation */
+header {
   text-align: center;
 }
 
-footer {
+nav {
   background-color: #333;
   color: white;
   text-align: center;
   padding: 10px;
+}
+
+nav ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+nav ul li {
+  display: inline-block;
+  margin: 0 15px;
+}
+
+nav ul li a {
+  color: white;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+/* Main Content */
+main {
+  padding: 20px 0;
+}
+
+h2, h3 {
+  font-family: 'Roboto', sans-serif;
+}
+
+h2 {
+  font-size: 1.6rem;
+}
+
+h3 {
+  font-size: 1.4rem;
+}
+
+button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+/* Reviews Section */
+.reviews ul {
+  list-style: none;
+  padding: 0;
+}
+
+.reviews ul li {
+  margin-bottom: 10px;
+}
+
+/* Delorean Upgrades */
+.image-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.image-item {
+  width: 100%;
+  text-align: center;
+}
+
+.image-item img {
+  max-width: 100%;
+  height: auto;
+  border: 2px solid #333;
+}
+
+.image-item span {
+  display: block;
+  margin-top: 5px;
+  font-weight: bold;
+  color: #007bff;
+}
+
+/* Footer */
+footer {
+  text-align: center;
+  font-size: 0.9rem;
+  margin-top: 20px;
+}
+
+/* Large Screen Styling */
+@media screen and (min-width: 768px) {
+  #wrapper {
+      max-width: 1200px;
+      margin: 0 auto;
+  }
+
+  nav ul li {
+      margin: 0 20px;
+  }
+
+  nav ul li a {
+      font-size: 1.2rem;
+  }
+
+  .side-by-side {
+      display: flex;
+      justify-content: space-between;
+  }
+
+  .section.upgrades, .section.reviews {
+      width: 48%;
+  }
+
+  .image-item {
+      width: 48%;
+  }
+
+  /* Adjustments for Reviews Section */
+  .reviews ul {
+      padding-left: 20px;
+  }
+
+  .reviews ul li {
+      margin-bottom: 15px;
+  }
+
+  /* Adjust button */
+  button {
+      padding: 12px 20px;
+      font-size: 1rem;
+  }
 }
