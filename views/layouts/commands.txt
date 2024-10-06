@@ -1,0 +1,87 @@
+EJS Tags Explanation:
+
+- <%    : 'Scriptlet' tag, for control-flow, no output
+- <%-   : 'Whitespace Slurping' Scriptlet tag, strips all whitespace before it
+- <%=   : Outputs the value into the template (HTML escaped)
+- <%-   : Outputs the unescaped value into the template
+- <%#   : Comment tag, no execution, no output
+- <%%   : Outputs a literal '<%'
+- %>    : Plain ending tag
+- -%>   : Trim-mode ('newline slurp') tag, trims following newline
+- _%>   : 'Whitespace Slurping' ending tag, removes all whitespace after it
+
+Here’s an objective description and example for each EJS tag:
+
+1. **`<%`** : Scriptlet tag
+   - **Description**: Used for control-flow statements such as loops or conditionals. It does not produce any output.
+   - **Example**:
+     ```ejs
+     <% if (user) { %>
+       <p>Welcome, <%= user.name %>!</p>
+     <% } %>
+     ```
+
+2. **`<%-`** : Whitespace-slurping scriptlet tag
+   - **Description**: Outputs the raw, unescaped value into the template. Strips whitespace before it.
+   - **Example**:
+     ```ejs
+     <%- include('header') %>  <!-- Includes another template and strips whitespace before this line -->
+     ```
+
+3. **`<%=`** : Output (escaped) tag
+   - **Description**: Outputs the value into the template with HTML escaping to prevent cross-site scripting (XSS).
+   - **Example**:
+     ```ejs
+     <p>Your name is: <%= user.name %></p>
+     ```
+
+4. **`<%-`** : Output (unescaped) tag
+   - **Description**: Outputs the unescaped value into the template. Useful when you want to output raw HTML.
+   - **Example**:
+     ```ejs
+     <div><%- user.content %></div> <!-- Inserts raw HTML content -->
+     ```
+
+5. **`<%#`** : Comment tag
+   - **Description**: A comment that is not executed and does not appear in the output.
+   - **Example**:
+     ```ejs
+     <%# This comment will not appear in the HTML %>
+     ```
+
+6. **`<%%`** : Literal tag
+   - **Description**: Outputs a literal `<%` character sequence, useful for avoiding tag evaluation.
+   - **Example**:
+     ```ejs
+     <%% This will print as "<%" in the output %>
+     ```
+
+7. **`%>`** : Plain ending tag
+   - **Description**: Marks the end of a scriptlet, output, or comment block.
+   - **Example**:
+     ```ejs
+     <% if (user) { %>  <!-- Scriptlet opening tag -->
+     <p>Welcome, <%= user.name %>!</p>
+     <% } %>            <!-- Scriptlet closing tag -->
+     ```
+
+8. **`-%>`** : Trim-mode ending tag
+   - **Description**: Ends a scriptlet and trims the following newline character to reduce whitespace.
+   - **Example**:
+     ```ejs
+     <% if (user) { -%>
+     <p>Welcome, <%= user.name %>!</p>
+     <% } %>
+     ```
+
+9. **`_%>`** : Whitespace-slurping ending tag
+   - **Description**: Ends the scriptlet and removes all whitespace after it.
+   - **Example**:
+     ```ejs
+     <% if (user) { _%>
+     <p>Welcome, <%= user.name %>!</p>
+     <% } %>
+     ```
+
+
+

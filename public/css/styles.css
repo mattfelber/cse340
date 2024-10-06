@@ -1,156 +1,651 @@
-/* Mobile-first styling */
+/******* Change Box Model ***************/
+*,
+*:before,
+*:after {
+  box-sizing: border-box;
+}
+
+/* ADDED FOR CONVENIENCE */
+:root {
+  --primary-background: #fff;
+  --main-accent: #137bc5;
+  --blk: #000;
+  --drk-blue: #00008B;
+}
+
 body {
-  font-family: 'Arial', sans-serif;
   margin: 0;
-  padding: 0;
-  background-color: #f4f4f4;
+  background-image: url('/images/site/checkerboard.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+h1, h2, h3, p {
+  font-family: "Raleway", sans-serif;
+  color: var(--blk);
+  margin: 20px auto;
+}
+
+h1 {
+  font-size: 24px;
+  margin: 24px auto;
+}
+
+h2 {
+  font-size: 22px;
+  margin: 22px auto;
+}
+
+h3 {
+  font-size: 20px;
+  margin: 20px auto;
 }
 
 #wrapper {
-  padding: 15px;
+  width: 95%;
+  background-color: var(--primary-background);
+  margin-left: auto;
+  margin-right: auto;
+  padding-bottom: 1em;
 }
 
-/* Header and Navigation */
-header {
-  text-align: center;
-}
-
+/* Full-width black navbar */
 nav {
-  background-color: #333;
-  color: white;
-  text-align: center;
-  padding: 10px;
+  background-color: var(--blk);
+  width: 100%;
+  padding: 10px 0; /* Increased padding for better spacing */
+  box-sizing: border-box;
+  text-align: center; /* Center aligns the list in the nav */
 }
 
+/* Reset some default styles and center the navigation items */
 nav ul {
   list-style-type: none;
   padding: 0;
   margin: 0;
+  display: flex;
+  justify-content: center;  /* Horizontally aligns the nav items */
+  gap: 20px; /* Add some space between the items */
 }
 
+/* Style individual navigation items */
 nav ul li {
-  display: inline-block;
-  margin: 0 15px;
+  margin: 0;
+  display: inline-block; /* Makes the list items appear inline */
 }
 
 nav ul li a {
-  color: white;
+  display: block;
+  padding: 10px 20px;  /* Increased padding for larger clickable area */
+  background-color: var(--blk);
+  color: #fff;
   text-decoration: none;
+  text-align: center;
+  border-radius: 5px;
+  font-size: 16px; /* Increased font size for better readability */
+  transition: background-color 0.3s ease;
+}
+
+nav ul li a:hover {
+  background-color: #333;
+  color: #fff;
+}
+/*end of nav*/
+
+/* Section Styling */
+section {
+  width: 30%; 
+  background-color: rgba(255, 255, 255, 0.8);
+  padding: 20px;
+  border-radius: 10px;
+  margin: 20px 0; 
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+section h2 {
+  margin-bottom: 10px;
+  color: var(--main-accent);
+}
+
+section ul {
+  list-style-type: none;
+  padding-left: 0;
+  color: var(--main-accent);
+}
+
+section button {
+  margin-top: 20px;
+  padding: 10px 20px;
+  background-color: var(--main-accent);
+  color: var(--blk);
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  width: 100%;
+}
+
+section button:hover {
+  background-color: #018cae;
+}
+
+/* Main */
+main {
+  background-image: url('/images/vehicles/delorean.jpg');
+  background-size: 80%;
+  background-position: top right;
+  background-repeat: no-repeat;
+  min-height: 400px;
+  padding: 20px;
+  margin-top: 20px;
+  position: relative;
+}
+
+h1 {
+  margin-bottom: 20px;
+  text-align: left;
+}
+
+/* Top header */
+#top-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  background-color: #f8f8f8;
+}
+
+.siteName a {
+  text-decoration: none;
+  color: var(--blk);
   font-weight: bold;
 }
 
-/* Main Content */
-main {
-  padding: 20px 0;
+#tools a {
+  text-decoration: none;
+  color: var(--drk-blue);
 }
 
-h2, h3 {
-  font-family: 'Roboto', sans-serif;
+#tools a:hover {
+  text-decoration: underline;
 }
 
-h2 {
-  font-size: 1.6rem;
-}
-
-h3 {
-  font-size: 1.4rem;
-}
-
-button {
-  background-color: #007bff;
-  color: white;
-  border: none;
-  padding: 10px;
-  cursor: pointer;
-  border-radius: 5px;
-}
-
-button:hover {
-  background-color: #0056b3;
-}
-
-/* Reviews Section */
-.reviews ul {
-  list-style: none;
-  padding: 0;
-}
-
-.reviews ul li {
-  margin-bottom: 10px;
-}
-
-/* Delorean Upgrades */
-.image-grid {
+/* Selections Styles */
+.side-by-side {
   display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
+  justify-content: space-between;
+  gap: 20px;
+  width: 100%; /* Full width */
+  color: var(--blk);
+}
+
+.section {
+  flex: 1;
+  background-color: rgba(255, 255, 255, 0.8);
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Styles for upgrades */
+.side-by-side h3 {
+  color: var(--blk);
+}
+
+/* Styles for the image grid */
+.image-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); 
+  gap: 10px; 
+}
+
+/* Responsive adjustments for the upgrades section */
+@media only screen and (max-width: 768px) {
+  .image-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Additional styles for sections */
+@media only screen and (max-width: 480px) {
+  .image-grid {
+    grid-template-columns: 1fr; 
+  }
 }
 
 .image-item {
-  width: 100%;
   text-align: center;
 }
 
+.image-item {
+  width: 200px; 
+  height: auto; 
+  overflow: hidden;
+}
+
 .image-item img {
-  max-width: 100%;
-  height: auto;
-  border: 2px solid #333;
+  width: 50%; 
+  height: auto; 
+  object-fit: cover; 
+  border-radius: 5px;
+  transition: transform 0.3s ease;
+}
+
+.image-item img:hover {
+  transform: scale(1.05); 
 }
 
 .image-item span {
   display: block;
-  margin-top: 5px;
+  margin-top: 8px;
   font-weight: bold;
-  color: #007bff;
 }
 
-/* Footer */
-footer {
-  text-align: center;
-  font-size: 0.9rem;
+.image-item a {
+  text-decoration: none;
+  color: var(--blk);
+}
+
+/* Styles for the bullet points */
+.reviews h2 {
+  color: var(--blk);
+}
+.reviews ul {
+  list-style-type: disc;
+  padding-left: 20px;
+  text-align: left;
+}
+
+.reviews li {
+  color: var(--blk);
+  margin-bottom: 10px;
+}
+
+/* Responsive design: stack sections on mobile */
+@media only screen and (max-width: 768px) {
+  .side-by-side {
+    flex-direction: column;
+  }
+
+  .section {
+    width: 100%;
+    margin-bottom: 20px; 
+  }
+}
+
+/* Additional styling for the "DMC Delorean" section */
+section {
+  width: 30%; 
+  background-color: rgba(255, 255, 255, 0.8); 
+  padding: 20px;
+  border-radius: 10px;
+  margin: 20px 0;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Close button styling */
+#close-btn {
+  background-color: var(--blk);
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-size: 1rem;
+  margin: 10px;
+  cursor: pointer;
+  border-radius: 4px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+#close-btn:hover {
+  background-color: #606060;
+}
+
+/* Inventory Display */
+#classification-title {
+  background-color: var(--primary-background);
+  padding: 20px 0 40px;
+  margin: 20px 0 -30px;
+}
+
+#inv-display {
+  background-color: var(--primary-background);
+  display: grid; 
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); 
+  gap: 20px; 
+  font-weight: 700;
+  list-style-type: none; 
+  padding: 0;
+}
+
+#inv-display .image-item {
+  background-color: rgba(255, 255, 255, 0.8); 
+  padding: 20px; 
+  border-radius: 10px; 
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+  text-align: center; 
+  border: 2px solid var(--main-accent); 
+  transition: transform 0.3s ease; 
+}
+
+#inv-display .inv-image:hover {
+  transform: scale(1.05);
+}
+
+.namePrice {
+  padding: 10px; 
+  background-color: rgba(255, 255, 255, 0.8); 
+  border-radius: 5px;
+}
+
+.inv-image {
+  width: 200px; 
+  height: auto; 
+  overflow: hidden;
+  object-fit: cover;
+  border: 1px solid var(--main-accent);
+  border-radius: 4px;
+  margin: 0 10px 10px 0;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Vehicles Display */
+#vehicle-details {
+  background-color: var(--primary-background);
+  display: flex;
+  align-items: flex-start; 
+  gap: 20px; 
+  width: 100%;
+  padding: 0 20px;
+  position: relative; /* To position the close button absolutely */
+  box-sizing: border-box;
+}
+
+#vehicle-details img {
+  max-width: 50%; 
+  height: auto;
+  margin: 20px auto; 
+}
+
+#vehicle-details .details {
+  max-width: 50%; 
+}
+
+#close-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  padding: 10px 20px;
+  color: white;
+  border: none;
+  cursor: pointer;
+  z-index: 10;
+  width: 10%;
+}
+
+/* Error Page Styles */
+#error-wrapper {
+  text-align: left;
+  padding: 50px;
+  background-color: #f9d6d5; /* Light red background for error */
+  color: #333;
+  border-radius: 10px;
+  margin: 50px auto;
+  max-width: 600px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.error-title {
+  font-size: 2.5rem;
+  color: #e74c3c; /* Red color for error title */
+  margin-bottom: 20px;
+}
+
+.error-message {
+  font-size: 1.2rem;
+  color: #333;
   margin-top: 20px;
 }
 
-/* Large Screen Styling */
-@media screen and (min-width: 768px) {
-  #wrapper {
-      max-width: 1200px;
-      margin: 0 auto;
+.error-link {
+  display: inline-block;
+  padding: 10px 20px;
+  background-color: #3498db; /* Blue background for link */
+  color: white;
+  border-radius: 5px;
+  text-decoration: none;
+  margin-top: 30px;
+}
+
+.error-link:hover {
+  background-color: #2980b9;
+}
+
+/* Responsive design: for vehicle details */
+@media (max-width: 768px) {
+  #vehicle-details {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  #vehicle-details img, 
+  #vehicle-details .details {
+    max-width: 100%;
+  }
+
+  #close-btn {
+    position: relative;
+    top: 0;
+    right: 0;
+    margin-bottom: 10px; 
+    width: 100%;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  #vehicle-details {
+      margin: 10px 0;
+      padding: 0 0 30px;
+  }
+
+  #vehicle-details .details {
+    max-width: 100%; 
+    padding: 10px;
+  }
+
+  #vehicle-details img {
+      width: 100%;
+      margin: 20px 0 -15px;
+  }
+
+  .details h2 {
+      font-size: 1.5rem; 
+      text-align: left;
+  }
+
+  .details p {
+      font-size: 1rem; 
+      text-align: left;
+      margin: 0 0 10px;
+  }
+}
+
+/* Adjust "DMC Delorean" section responsiveness */
+@media only screen and (max-width: 768px) {
+  section {
+    width: 100%;
+    margin: 20px 0;
+  }
+}
+
+/* Medium screens (tablets, small desktops) */
+@media only screen and (max-width: 1024px) {
+  section {
+    width: 50%; 
+  }
+}
+
+/* Small screens (phones, smaller tablets) */
+@media only screen and (max-width: 768px) {
+  section {
+    width: 70%; 
+  }
+}
+
+/* Extra small screens (very small devices) */
+@media only screen and (max-width: 480px) {
+  section {
+    width: 80%; 
+  }
+}
+
+/* Adjustments for larger screens */
+@media only screen and (min-width: 768px) {
+  nav {
+    padding: 10px 0;
   }
 
   nav ul li {
-      margin: 0 20px;
+    margin: 0 15px;
   }
 
   nav ul li a {
-      font-size: 1.2rem;
+    padding: 12px 20px;
+    font-size: 16px;
+  }
+}
+
+/* Combined Media Queries */
+@media only screen and (max-width: 768px) {
+  body {
+    background-image: none; 
   }
 
-  .side-by-side {
-      display: flex;
-      justify-content: space-between;
+  main {
+    background-size: contain; 
+    min-height: 300px; 
+    padding: 15px; 
   }
 
-  .section.upgrades, .section.reviews {
-      width: 48%;
+  h1 {
+    font-size: 24px; 
+    margin-bottom: 15px; 
+  }
+}
+
+@media only screen and (min-width: 768px) {
+  body {
+    background-image: url('/images/site/checkerboard.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+
+  #wrapper {
+    border: 5px solid var(--main-accent);
+    border-radius: 10px;
+    margin-top: 1rem;
+    padding: 1vw;
+    width: 75vw;
+    max-width: 1200px;
+    background-color: #fff;
+  }
+}
+
+/* Center-align everything on small screens */
+@media only screen and (max-width: 768px) {
+  body {
+    background-image: none; 
+  }
+
+  main {
+    background-size: contain; 
+    min-height: 300px; 
+    padding: 15px; 
+    text-align: center; 
+  }
+
+  h1, h2, h3, p {
+    text-align: center; 
+  }
+
+  #wrapper {
+    text-align: center;
+  }
+
+  .section {
+    margin: 0 auto; 
+    width: auto; 
   }
 
   .image-item {
-      width: 48%;
+    margin: 0 auto; 
   }
 
-  /* Adjustments for Reviews Section */
-  .reviews ul {
-      padding-left: 20px;
+  .side-by-side {
+    flex-direction: column; 
+    align-items: center; 
   }
 
-  .reviews ul li {
-      margin-bottom: 15px;
-  }
-
-  /* Adjust button */
-  button {
-      padding: 12px 20px;
-      font-size: 1rem;
+  section {
+    width: 100%; 
+    margin-bottom: 20px; 
   }
 }
+
+/* Mobile CSS for inv-display */
+@media (max-width: 600px) {
+  #classification-title {
+    font-size: 5vh;
+    padding-bottom: 50px;
+  }
+
+  #inv-display {
+    display: flex;
+    flex-direction: column;
+    align-items: center; 
+    justify-content: center; 
+    padding: 0;
+    margin: 0 auto;
+  }
+
+  #inv-display li {
+    width: 100%; 
+    max-width: 300px; 
+    margin-bottom: 20px; 
+  }
+
+  #inv-display img {
+    width: 100%; 
+    height: auto; 
+  }
+
+  #inv-display .namePrice {
+    text-align: center; 
+    font-size: 3vh;
+  }
+}
+
+
+/*
+  The following styles are placed at the bottom of the stylesheet to ensure they override any previous styles or default 
+  browser (user agent) styles that might be affecting the navigation layout. By placing the styles here, we ensure that they 
+  have higher specificity and are applied last, which is crucial for fixing issues related to the <ul> and <li> elements not 
+  displaying correctly as a horizontal navigation bar.
+
+  The `!important` declarations are added as a safeguard to further enforce that these styles take precedence over any 
+  conflicting styles that might exist earlier in the stylesheet or come from default browser styles. This way, we can be sure 
+  that the navigation bar appears as expected, aligned horizontally with the proper spacing and styling.
+*/
+nav ul {
+  list-style-type: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  display: flex !important; /* Force flex */
+  justify-content: center !important; /* Center horizontally */
+  gap: 20px !important; /* Add spacing between items */
+}
+
+nav ul li {
+  display: inline-block !important;
+}
+/*black navbar end -- need a better way*/
