@@ -36,11 +36,11 @@ app.get("/", baseController.buildHome)
  * Values from .env (environment) file
  *************************/
 const port = process.env.PORT || 5500
-const host = process.env.HOST || 'localhost'
+const host = process.env.HOST || '0.0.0.0'
 
 /* ***********************
  * Log statement to confirm server operation
  *************************/
-app.listen(port, () => {
+app.listen(port, host, () => {
   console.log(`app listening on ${host}:${port}`)
 })
