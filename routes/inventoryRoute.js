@@ -20,8 +20,9 @@ router.post("/add-classification",
 
 // Update inventory validation references
 router.get("/add-inventory", utilities.handleErrors(invController.buildAddInventory));
-router.post("/add-inventory", 
-  invValidate.rules(), // Ensure correct method call
+router.post(
+  "/add-inventory",
+  invValidate.rules(),
   invValidate.checkData,
   utilities.handleErrors(invController.addInventory)
 );

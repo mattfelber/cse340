@@ -21,13 +21,32 @@ Util.getNav = async function () {
 };
 
 /* ************************
- * Other Utility Functions
- ************************ */
+ * Build Classification List HTML for Dropdown
+ ************************** */
+Util.buildClassificationList = async function (selectedId = null) {
+  try {
+    let data = await invModel.getClassifications();
+    let list = `<select name="classification_id" id="classification_id" required>`;
+    list += `<option value="">Select a Classification</option>`;
+    data.rows.forEach((row) => {
+      list += `<option value="${row.classification_id}" ${selectedId == row.classification_id ? "selected" : ""}>${row.classification_name}</option>`;
+    });
+    list += "</select>";
+    return list;
+  } catch (error) {
+    console.error("Error building classification list: ", error);
+    throw error;
+  }
+};
+
+/* ************************
+ * Build Classification Grid HTML
+ ************************** */
 Util.buildClassificationGrid = function (data) {
   let grid;
   if (data.length > 0) {
     grid = '<div class="classification-grid">';
-    data.forEach(vehicle => {
+    data.forEach((vehicle) => {
       grid += `
         <div class="vehicle-card">
           <img src="${vehicle.inv_thumbnail}" alt="Image of ${vehicle.inv_make} ${vehicle.inv_model}">
@@ -37,7 +56,7 @@ Util.buildClassificationGrid = function (data) {
         </div>
       `;
     });
-    grid += '</div>';
+    grid += "</div>";
   } else {
     grid = '<p>No vehicles found for this classification.</p>';
   }
@@ -63,7 +82,7 @@ Util.buildVehicleDetail = function (vehicle) {
 /* ************************
  * Error Handling Middleware
  ************************ */
-Util.handleErrors = fn => (req, res, next) => {
+Util.handleErrors = (fn) => (req, res, next) => {
   Promise.resolve(fn(req, res, next)).catch(next);
 };
 
@@ -72,6 +91,7 @@ Util.handleErrors = fn => (req, res, next) => {
  ************************ */
 module.exports = {
   getNav: Util.getNav,
+  buildClassificationList: Util.buildClassificationList,
   buildClassificationGrid: Util.buildClassificationGrid,
   buildVehicleDetail: Util.buildVehicleDetail,
   handleErrors: Util.handleErrors,

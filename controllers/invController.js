@@ -57,6 +57,62 @@ invCont.addClassification = async (req, res, next) => {
 };
 
 /* ***************************
+ *  Process Adding New Inventory Item
+ * ************************** */
+invCont.addInventory = async (req, res, next) => {
+  const {
+    inv_make,
+    inv_model,
+    inv_description,
+    inv_image,
+    inv_thumbnail,
+    inv_price,
+    inv_year,
+    inv_miles,
+    inv_color,
+    classification_id,
+  } = req.body;
+
+  try {
+    // Add inventory item using the model function
+    await invModel.addInventoryItem({
+      inv_make,
+      inv_model,
+      inv_description,
+      inv_image,
+      inv_thumbnail,
+      inv_price,
+      inv_year,
+      inv_miles,
+      inv_color,
+      classification_id,
+    });
+    req.flash("message", "Vehicle added successfully!");
+    res.redirect("/inv/management");
+  } catch (error) {
+    req.flash("error", "Failed to add vehicle. Please try again.");
+    let nav = await utilities.getNav();
+    let classificationList = await utilities.buildClassificationList(classification_id);
+
+    res.render("./inventory/add-inventory", {
+      title: "Add Inventory Item",
+      nav,
+      classificationList,
+      errors: [{ msg: "Failed to add vehicle. Please try again." }],
+      inv_make,
+      inv_model,
+      inv_description,
+      inv_image,
+      inv_thumbnail,
+      inv_price,
+      inv_year,
+      inv_miles,
+      inv_color,
+    });
+  }
+};
+
+/* ***************************
  *  Build Add Inventory View
  * ************************** */
 invCont.buildAddInventory = async (req, res, next) => {
@@ -67,6 +123,16 @@ invCont.buildAddInventory = async (req, res, next) => {
       title: "Add Inventory Item", // Set page title
       nav, // Pass the navigation bar to the view
       classificationList, // Pass the classification dropdown list to the view
+      inv_make: "",        // Provide default empty values
+      inv_model: "",
+      inv_description: "",
+      inv_image: "/images/vehicles/no-image.png",
+      inv_thumbnail: "/images/vehicles/no-image.png",
+      inv_price: "",
+      inv_year: "",
+      inv_miles: "",
+      inv_color: "",
+      errors: [], // Initialize errors array to prevent undefined errors
     });
   } catch (error) {
     next(error); // Pass errors to the error handling middleware
