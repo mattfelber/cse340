@@ -1,4 +1,4 @@
-const pool = require("../database/")
+const pool = require("../database/");
 
 /* ***************************
  *  Get all classification data
@@ -42,7 +42,7 @@ async function addInventoryItem(vehicle) {
  *  Get a vehicle by its ID
  * ************************** */
 async function getVehicleById(id) {
-  const sql = 'SELECT * FROM inventory WHERE inventory_id = $1';
+  const sql = 'SELECT * FROM inventory WHERE inv_id = $1'; // Ensure consistency here
   const data = await pool.query(sql, [id]);
   return data.rows[0]; // Assuming rows[0] contains the specific vehicle
 }
@@ -60,7 +60,7 @@ async function getInventoryByClassificationId(classificationId) {
 module.exports = { 
   getClassifications, 
   addClassification, 
-  addInventoryItem, // Include this to export the function
+  addInventoryItem, 
   getVehicleById,
   getInventoryByClassificationId 
 };

@@ -52,7 +52,7 @@ Util.buildClassificationGrid = function (data) {
           <img src="${vehicle.inv_thumbnail}" alt="Image of ${vehicle.inv_make} ${vehicle.inv_model}">
           <h2>${vehicle.inv_make} ${vehicle.inv_model}</h2>
           <p>Price: ${new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(vehicle.inv_price)}</p>
-          <a href="/inv/detail/${vehicle.inventory_id}" class="btn">View Details</a>
+          <a href="/inv/detail/${vehicle.inv_id}" class="btn">View Details</a>
         </div>
       `;
     });
@@ -62,6 +62,7 @@ Util.buildClassificationGrid = function (data) {
   }
   return grid;
 };
+
 
 /* ************************
  * Build vehicle detail HTML

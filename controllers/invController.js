@@ -163,13 +163,21 @@ invCont.buildByClassificationId = async function (req, res, next) {
  *  Build inventory by inventory view (Vehicle Details View)
  * ************************** */
 invCont.buildByInventoryId = async function (req, res, next) {
-  const inv_id = req.params.invId;
+  const inv_id = parseInt(req.params.invId); // Ensure it's parsed as an integer
   try {
+    if (isNaN(inv_id)) {
+      throw new Error("Invalid vehicle ID."); // Catch non-integer inv_id values
+    }
+
     const data = await invModel.getVehicleById(inv_id); // Updated function call
+    if (!data) {
+      throw new Error("Vehicle not found."); // Handle cases where no vehicle is found
+    }
+
     const vehicleDetail = utilities.buildVehicleDetail(data); // HTML built in utility
     let nav = await utilities.getNav();
     res.render("./inventory/detail", {
-      title: data.inv_make + " " + data.inv_model, // Display vehicle make and model
+      title: `${data.inv_make} ${data.inv_model}`, // Display vehicle make and model
       nav,
       vehicleDetail,
     });
@@ -177,5 +185,6 @@ invCont.buildByInventoryId = async function (req, res, next) {
     next(error);
   }
 };
+
 
 module.exports = invCont; // Export the controller object
