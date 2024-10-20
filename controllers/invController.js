@@ -40,16 +40,18 @@ invCont.buildAddClassification = async (req, res, next) => {
 invCont.addClassification = async (req, res, next) => {
   const { classification_name } = req.body; // Extract the classification name from the form submission
   try {
-    await invModel.addClassification(classification_name); // Add the classification to the database
-    req.flash("message", "Classification added successfully!"); // Optionally, you can add a flash message here
-    res.redirect("/inv/management"); // Redirect to the management view after success
+    // Attempt to add the classification
+    await invModel.addClassification(classification_name);
+    req.flash("message", "Classification added successfully!");
+    res.redirect("/inv/management");
   } catch (error) {
-    req.flash("error", "Failed to add classification. Please try again.");
     let nav = await utilities.getNav();
+    // Re-render the view with an errors array if something goes wrong
     res.render("./inventory/add-classification", {
       title: "Add Classification",
       nav,
-      errors: [{ msg: "Failed to add classification. Please try again." }]
+      errors: [{ msg: "Failed to add classification. Please try again." }],
+      classification_name // Preserve entered classification name on failure
     });
   }
 };
@@ -68,28 +70,6 @@ invCont.buildAddInventory = async (req, res, next) => {
     });
   } catch (error) {
     next(error); // Pass errors to the error handling middleware
-  }
-};
-
-/* ***************************
- *  Process Adding New Classification
- * ************************** */
-invCont.addClassification = async (req, res, next) => {
-  const { classification_name } = req.body; // Extract the classification name from the form submission
-  try {
-    // Attempt to add the classification
-    await invModel.addClassification(classification_name);
-    req.flash("message", "Classification added successfully!");
-    res.redirect("/inv/management");
-  } catch (error) {
-    let nav = await utilities.getNav();
-    // Re-render the view with an errors array if something goes wrong
-    res.render("./inventory/add-classification", {
-      title: "Add Classification",
-      nav,
-      errors: [{ msg: "Failed to add classification. Please try again." }],
-      classification_name
-    });
   }
 };
 

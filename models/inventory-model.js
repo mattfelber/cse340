@@ -8,6 +8,20 @@ async function getClassifications(){
 }
 
 /* ***************************
+ *  Add a new classification
+ * ************************** */
+async function addClassification(classification_name) {
+  try {
+    const sql = "INSERT INTO classification (classification_name) VALUES ($1)";
+    const result = await pool.query(sql, [classification_name]);
+    return result.rowCount; // Return the number of rows inserted (should be 1 on success)
+  } catch (error) {
+    console.error("Database Error - Failed to add classification:", error); // Log the error details
+    throw error; // Rethrow the error so it can be caught in the controller
+  }
+}
+
+/* ***************************
  *  Get a vehicle by its ID
  * ************************** */
 async function getVehicleById(id) {
@@ -28,6 +42,7 @@ async function getInventoryByClassificationId(classificationId) {
 // Export all functions properly
 module.exports = { 
   getClassifications, 
+  addClassification,
   getVehicleById,
-  getInventoryByClassificationId // Add this to export the function
+  getInventoryByClassificationId 
 };
