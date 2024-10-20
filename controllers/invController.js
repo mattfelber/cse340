@@ -1,7 +1,97 @@
+// Import necessary modules and utilities
 const invModel = require("../models/inventory-model");
 const utilities = require("../utilities/");
 
-const invCont = {};
+const invCont = {}; // Create an empty controller object
+
+/* ***************************
+ *  Build Management View
+ * ************************** */
+invCont.buildManagement = async (req, res, next) => {
+  try {
+    let nav = await utilities.getNav(); // Get navigation bar
+    res.render("./inventory/management", {
+      title: "Vehicle Management", // Set page title
+      nav, // Pass the navigation bar to the view
+    });
+  } catch (error) {
+    next(error); // Pass errors to the error handling middleware
+  }
+};
+
+/* ***************************
+ *  Build Add Classification View
+ * ************************** */
+invCont.buildAddClassification = async (req, res, next) => {
+  try {
+    let nav = await utilities.getNav(); // Get navigation bar
+    res.render("./inventory/add-classification", {
+      title: "Add Classification", // Set page title
+      nav, // Pass the navigation bar to the view
+    });
+  } catch (error) {
+    next(error); // Pass errors to the error handling middleware
+  }
+};
+
+/* ***************************
+ *  Process Adding New Classification
+ * ************************** */
+invCont.addClassification = async (req, res, next) => {
+  const { classification_name } = req.body; // Extract the classification name from the form submission
+  try {
+    await invModel.addClassification(classification_name); // Add the classification to the database
+    req.flash("message", "Classification added successfully!"); // Optionally, you can add a flash message here
+    res.redirect("/inv/management"); // Redirect to the management view after success
+  } catch (error) {
+    req.flash("error", "Failed to add classification. Please try again.");
+    let nav = await utilities.getNav();
+    res.render("./inventory/add-classification", {
+      title: "Add Classification",
+      nav,
+      errors: [{ msg: "Failed to add classification. Please try again." }]
+    });
+  }
+};
+
+/* ***************************
+ *  Build Add Inventory View
+ * ************************** */
+invCont.buildAddInventory = async (req, res, next) => {
+  try {
+    let nav = await utilities.getNav(); // Get navigation bar
+    let classificationList = await utilities.buildClassificationList(); // Get the classification dropdown list
+    res.render("./inventory/add-inventory", {
+      title: "Add Inventory Item", // Set page title
+      nav, // Pass the navigation bar to the view
+      classificationList, // Pass the classification dropdown list to the view
+    });
+  } catch (error) {
+    next(error); // Pass errors to the error handling middleware
+  }
+};
+
+/* ***************************
+ *  Process Adding New Classification
+ * ************************** */
+invCont.addClassification = async (req, res, next) => {
+  const { classification_name } = req.body; // Extract the classification name from the form submission
+  try {
+    // Attempt to add the classification
+    await invModel.addClassification(classification_name);
+    req.flash("message", "Classification added successfully!");
+    res.redirect("/inv/management");
+  } catch (error) {
+    let nav = await utilities.getNav();
+    // Re-render the view with an errors array if something goes wrong
+    res.render("./inventory/add-classification", {
+      title: "Add Classification",
+      nav,
+      errors: [{ msg: "Failed to add classification. Please try again." }],
+      classification_name
+    });
+  }
+};
 
 /* ***************************
  *  Build inventory by classification view
@@ -42,4 +132,4 @@ invCont.buildByInventoryId = async function (req, res, next) {
   }
 };
 
-module.exports = invCont;
+module.exports = invCont; // Export the controller object

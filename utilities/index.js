@@ -1,33 +1,29 @@
 const invModel = require("../models/inventory-model");
-const Util = {};
+const Util = {}; // Create an empty utility object
 
 /* ************************
- * Constructs the nav HTML unordered list
+ * Constructs the Navigation HTML
  ************************** */
-Util.getNav = async function (req, res, next) {
-  let data = await invModel.getClassifications();
-  let list = "<ul>";
-  list += '<li><a href="/" title="Home page">Home</a></li>';
-  data.rows.forEach((row) => {
-    list += "<li>";
-    list +=
-      '<a href="/inv/type/' +
-      row.classification_id +
-      '" title="See our inventory of ' +
-      row.classification_name +
-      ' vehicles">' +
-      row.classification_name +
-      "</a>";
-    list += "</li>";
-  });
-  list += "</ul>";
-  return list;
+Util.getNav = async function () {
+  try {
+    let data = await invModel.getClassifications(); // Fetch classifications from the database
+    let list = "<ul>";
+    list += '<li><a href="/" title="Home page">Home</a></li>';
+    data.rows.forEach((row) => {
+      list += `<li><a href="/inv/type/${row.classification_id}" title="See our ${row.classification_name} vehicles">${row.classification_name}</a></li>`;
+    });
+    list += "</ul>";
+    return list; // Return the constructed HTML list
+  } catch (error) {
+    console.error("Error generating navigation: ", error);
+    return "<ul><li><a href='/'>Home</a></li></ul>"; // Return a default nav if there's an error
+  }
 };
 
-/* ***************************
- *  Build Classification Grid HTML
- * ************************** */
-Util.buildClassificationGrid = function(data) {
+/* ************************
+ * Other Utility Functions
+ ************************ */
+Util.buildClassificationGrid = function (data) {
   let grid;
   if (data.length > 0) {
     grid = '<div class="classification-grid">';
@@ -48,10 +44,10 @@ Util.buildClassificationGrid = function(data) {
   return grid;
 };
 
-/* ***************************
- *  Build vehicle detail HTML
- * ************************** */
-Util.buildVehicleDetail = function(vehicle) {
+/* ************************
+ * Build vehicle detail HTML
+ ************************ */
+Util.buildVehicleDetail = function (vehicle) {
   return `
     <div class="vehicle-detail">
       <img src="${vehicle.inv_image}" alt="${vehicle.inv_make} ${vehicle.inv_model}">
@@ -64,19 +60,19 @@ Util.buildVehicleDetail = function(vehicle) {
   `;
 };
 
-/* ***************************
- *  Error Handling Middleware
- * ************************** */
+/* ************************
+ * Error Handling Middleware
+ ************************ */
 Util.handleErrors = fn => (req, res, next) => {
   Promise.resolve(fn(req, res, next)).catch(next);
 };
 
-/* ***************************
- *  Export Utility Functions
- * ************************** */
+/* ************************
+ * Export Utility Functions
+ ************************ */
 module.exports = {
   getNav: Util.getNav,
   buildClassificationGrid: Util.buildClassificationGrid,
   buildVehicleDetail: Util.buildVehicleDetail,
-  handleErrors: Util.handleErrors
+  handleErrors: Util.handleErrors,
 };
