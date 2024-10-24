@@ -1,0 +1,24 @@
+<h1>Update Account Information</h1>
+<form action="/account/update" method="POST">
+  <label for="firstName">First Name:</label>
+  <input type="text" name="firstName" value="<%= firstName %>">
+
+  <label for="lastName">Last Name:</label>
+  <input type="text" name="lastName" value="<%= lastName %>">
+
+  <label for="email">Email:</label>
+  <input type="email" name="email" value="<%= email %>">
+
+  <input type="hidden" name="accountId" value="<%= accountId %>">
+  <input type="submit" value="Update">
+</form>
+
+<h1>Change Password</h1>
+<form action="/account/change-password" method="POST">
+  <label for="newPassword">New Password:</label>
+  <input type="password" name="newPassword" required>
+  <input type="hidden" name="accountId" value="<%= accountId %>">
+  <input type="submit" value="Change Password">
+</form>
+
+<%- include('../partials/footer') %>

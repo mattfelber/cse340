@@ -1,99 +1,77 @@
 const invModel = require("../models/inventory-model");
-const Util = {}; // Create an empty utility object
+const jwt = require("jsonwebtoken");
+const crypto = require('crypto');  // For password hashing
 
-/* ************************
- * Constructs the Navigation HTML
- ************************** */
+const Util = {}; 
+
 Util.getNav = async function () {
   try {
-    let data = await invModel.getClassifications(); // Fetch classifications from the database
+    let data = await invModel.getClassifications();
     let list = "<ul>";
     list += '<li><a href="/" title="Home page">Home</a></li>';
     data.rows.forEach((row) => {
       list += `<li><a href="/inv/type/${row.classification_id}" title="See our ${row.classification_name} vehicles">${row.classification_name}</a></li>`;
     });
     list += "</ul>";
-    return list; // Return the constructed HTML list
-  } catch (error) {
-    console.error("Error generating navigation: ", error);
-    return "<ul><li><a href='/'>Home</a></li></ul>"; // Return a default nav if there's an error
-  }
-};
-
-/* ************************
- * Build Classification List HTML for Dropdown
- ************************** */
-Util.buildClassificationList = async function (selectedId = null) {
-  try {
-    let data = await invModel.getClassifications();
-    let list = `<select name="classification_id" id="classification_id" required>`;
-    list += `<option value="">Select a Classification</option>`;
-    data.rows.forEach((row) => {
-      list += `<option value="${row.classification_id}" ${selectedId == row.classification_id ? "selected" : ""}>${row.classification_name}</option>`;
-    });
-    list += "</select>";
     return list;
   } catch (error) {
-    console.error("Error building classification list: ", error);
-    throw error;
+    return "<ul><li><a href='/'>Home</a></li></ul>";
   }
 };
 
-/* ************************
- * Build Classification Grid HTML
- ************************** */
-Util.buildClassificationGrid = function (data) {
-  let grid;
-  if (data.length > 0) {
-    grid = '<div class="classification-grid">';
-    data.forEach((vehicle) => {
-      grid += `
-        <div class="vehicle-card">
-          <img src="${vehicle.inv_thumbnail}" alt="Image of ${vehicle.inv_make} ${vehicle.inv_model}">
-          <h2>${vehicle.inv_make} ${vehicle.inv_model}</h2>
-          <p>Price: ${new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(vehicle.inv_price)}</p>
-          <a href="/inv/detail/${vehicle.inv_id}" class="btn">View Details</a>
-        </div>
-      `;
-    });
-    grid += "</div>";
-  } else {
-    grid = '<p>No vehicles found for this classification.</p>';
+// JWT Token Utilities
+Util.getUserData = (token) => {
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    return decoded;
+  } catch (error) {
+    return null;
   }
-  return grid;
 };
 
-
-/* ************************
- * Build vehicle detail HTML
- ************************ */
-Util.buildVehicleDetail = function (vehicle) {
-  return `
-    <div class="vehicle-detail">
-      <img src="${vehicle.inv_image}" alt="${vehicle.inv_make} ${vehicle.inv_model}">
-      <h2>${vehicle.inv_year} ${vehicle.inv_make} ${vehicle.inv_model}</h2>
-      <p>Price: ${new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(vehicle.inv_price)}</p>
-      <p>Mileage: ${new Intl.NumberFormat('en-US').format(vehicle.inv_miles)} miles</p>
-      <p>Color: ${vehicle.inv_color}</p>
-      <p>Description: ${vehicle.inv_description}</p>
-    </div>
-  `;
-};
-
-/* ************************
- * Error Handling Middleware
- ************************ */
 Util.handleErrors = (fn) => (req, res, next) => {
   Promise.resolve(fn(req, res, next)).catch(next);
 };
 
-/* ************************
- * Export Utility Functions
- ************************ */
-module.exports = {
-  getNav: Util.getNav,
-  buildClassificationList: Util.buildClassificationList,
-  buildClassificationGrid: Util.buildClassificationGrid,
-  buildVehicleDetail: Util.buildVehicleDetail,
-  handleErrors: Util.handleErrors,
+// Password hash utility using crypto
+Util.hashPassword = (password) => {
+  return crypto.createHash('sha256').update(password).digest('hex');
 };
+
+Util.verifyPassword = (inputPassword, storedHash) => {
+  const hashedInput = crypto.createHash('sha256').update(inputPassword).digest('hex');
+  return hashedInput === storedHash;
+};
+
+/* ************************
+ * Middleware to verify JWT and user role
+ ************************ */
+Util.verifyJWT = (req, res, next) => {
+  const token = req.cookies.jwt;
+  if (!token) {
+    req.flash("error", "You must be logged in to view this page.");
+    return res.redirect("/account/login");
+  }
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    req.user = decoded;
+    next();
+  } catch (error) {
+    req.flash("error", "Invalid or expired token. Please log in again.");
+    return res.redirect("/account/login");
+  }
+};
+
+// Middleware to check user role (Admin or Employee)
+Util.checkUserRole = (roles) => {
+  return (req, res, next) => {
+    if (roles.includes(req.user.accountType)) {
+      next();
+    } else {
+      req.flash("error", "You do not have permission to access this area.");
+      return res.redirect("/");
+    }
+  };
+};
+
+module.exports = Util;
