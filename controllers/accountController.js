@@ -1,92 +1,332 @@
-const accountModel = require("../models/account-model");
-const utilities = require("../utilities/");
+const utilities = require("../utilities/")
+const accountModel = require("../models/account-model")
+const bcrypt = require("bcryptjs")
+const jwt = require("jsonwebtoken")
+require("dotenv").config()
 
-// Render the account management view
-const renderAccountManagement = (req, res) => {
-  const user = utilities.getUserData(req.cookies.jwt);
-  if (!user) return res.redirect("/account/login");
 
-  res.render("account/management", {
-    title: "Account Management",
-    firstName: user.firstName,
-    accountType: user.accountType,
-    accountId: user.id,
-    loggedIn: true,
-  });
-};
-
-// Render the update account view
-const getUpdateView = async (req, res) => {
-  try {
-    const account = await accountModel.getAccountById(req.params.id);
-    res.render("account/update", {
-      title: "Update Account",
-      firstName: account.firstName,
-      lastName: account.lastName,
-      email: account.email,
-      accountId: account.accountId,
-    });
-  } catch (error) {
-    res.render("account/update", {
-      title: "Update Account",
-      error: "Unable to load account details.",
-    });
+/* ****************************************
+*  Deliver login view
+* *************************************** */
+async function buildLogin(req, res, next) {
+    let nav = await utilities.getNav()
+    res.render("account/login", {
+      title: "Login",
+      nav,
+      errors: null,
+      notice: req.flash("notice"),
+      loggedIn: res.locals.loggedin
+    })
   }
-};
 
-// Handle account update
-const updateAccount = async (req, res) => {
-  try {
-    const { firstName, lastName, email, accountId } = req.body;
-    await accountModel.updateAccount({ firstName, lastName, email, accountId });
-    res.redirect("/account/management");
-  } catch (error) {
-    res.render("account/update", {
-      title: "Update Account",
-      error: "Unable to update account. Please try again.",
-      firstName,
-      lastName,
-      email,
-      accountId,
-    });
+
+  async function buildAccount(req, res, next) {
+    let nav = await utilities.getNav()
+    res.render("account/index", {
+      title: "Account",
+      nav,
+      errors: null,
+      notice: req.flash("notice"),
+      loggedIn: res.locals.loggedin,
+      first_name_user: res.locals.accountData.account_firstname,
+      last_name_user: res.locals.accountData.account_lastname,
+      account_type: res.locals.accountData.account_type
+    })
   }
-};
+  
 
-// Handle password change
-const changePassword = async (req, res) => {
-  try {
-    const { newPassword, accountId } = req.body;
-    const hashedPassword = accountModel.hashPassword(newPassword); // Hash the new password
-    await accountModel.updatePassword(hashedPassword, accountId);
-    res.redirect("/account/management");
-  } catch (error) {
-    res.render("account/update", {
-      title: "Update Account",
-      error: "Unable to change password. Please try again.",
-      accountId,
-    });
+
+  /* ****************************************
+*  Deliver registration view
+* *************************************** */
+async function buildRegister(req, res, next) {
+  let nav = await utilities.getNav()
+  res.render("account/register", {
+    title: "Register",
+    nav,
+    errors: null,
+    notice: req.flash("notice"),
+    loggedIn: res.locals.loggedin
+  })
+}
+
+  
+  /* ****************************************
+  *  Process Registration
+  * *************************************** */
+ async function registerAccount(req, res) {
+     let nav = await utilities.getNav()
+     const { account_firstname, account_lastname, account_email, account_password } = req.body
+     // Hash the password before storing
+     let hashedPassword
+     try {
+       // regular password and cost (salt is generated automatically)
+       hashedPassword = await bcrypt.hashSync(account_password, 10)
+     } catch (error) {
+       req.flash("notice", 'Sorry, there was an error processing the registration.')
+       res.status(500).render("account/register", {
+         title: "Registration",
+      nav,
+      errors: null,
+      loggedIn: res.locals.loggedin
+    })
   }
-};
 
-// Handle logout
-const logout = (req, res) => {
-  res.clearCookie("jwt");
-  res.redirect("/");
-};
+     const regResult = await accountModel.registerAccount(
+         account_firstname,
+         account_lastname,
+         account_email,
+         hashedPassword
+        )
+        if (regResult) {
+            req.flash(
+                "notice",
+                `Congratulations, you\'re registered ${account_firstname}. Please log in.`
+      )
+      res.status(201).render("account/login", {
+        title: "Login",
+        nav,
+        errors: null,
+        notice: req.flash("notice"),
+        loggedIn: res.locals.loggedin
+      })
+    } else {
+        req.flash("notice", "Sorry, the registration failed.")
+        res.status(501).render("account/register", {
+            title: "Registration",
+            nav,
+            errors: null,
+            loggedIn: res.locals.loggedin
+      })
+    }
 
-// Render the login view
-const renderLoginView = (req, res) => {
-  res.render("account/login", {
+  }
+    
+/* ****************************************
+ *  Process login request
+ * ************************************ */
+async function accountLogin(req, res) {
+  let nav = await utilities.getNav()
+  const { email, password } = req.body
+  const accountData = await accountModel.getAccountByEmail(email)
+  if (!accountData) {
+   req.flash("notice", "Please check your credentials and try again.")
+   res.status(400).render("account/login", {
     title: "Login",
-    errors: [],
-  });
-};
+    nav,
+    errors: null,
+    email,
+    notice: req.flash("notice"),
+    loggedIn: res.locals.loggedin
+   })
+  return
+  }
+  try {
+   if (await bcrypt.compare(password, accountData.account_password)) {
+   delete accountData.account_password
+   const accessToken = jwt.sign(accountData, process.env.ACCESS_TOKEN_SECRET, { expiresIn: 3600 })
+   if(process.env.NODE_ENV === 'development') {
+     res.cookie("jwt", accessToken, { httpOnly: true, maxAge: 3600 * 1000 })
+     } else {
+       res.cookie("jwt", accessToken, { httpOnly: true, secure: true, maxAge: 3600 * 1000 })
+     }
+   return res.redirect("/account/")
+   }
+  } catch (error) {
+   return new Error('Access Forbidden')
+  }
+ }
 
-module.exports = { 
-  renderAccountManagement, 
-  getUpdateView, 
-  updateAccount, 
-  changePassword, 
-  logout,
-  renderLoginView 
-};
+
+function accountLogout(req, res) {
+  res.clearCookie("jwt")
+  res.redirect("/")
+}
+
+
+async function updateAccountView(req, res) {
+  let nav = await utilities.getNav()
+  res.render("account/update", {
+    title: "Update Account",
+    nav,
+    errors: null,
+    notice: req.flash("notice"),
+    loggedIn: res.locals.loggedin,
+    account_firstname: res.locals.accountData.account_firstname,
+    account_lastname: res.locals.accountData.account_lastname,
+    account_email: res.locals.accountData.account_email,
+    account_id: res.locals.accountData.account_id,
+    loggedIn: res.locals.loggedin
+
+  })
+}
+  
+
+async function updateAccount(req, res) {
+  const { account_firstname, account_lastname, account_email, account_id } = req.body
+  const updateResult = await accountModel.updateAccount(account_firstname, account_lastname, account_email, account_id)
+  const nav = await utilities.getNav()
+  if (updateResult) {
+
+    res.locals.accountData.account_firstname = account_firstname
+    res.locals.accountData.account_lastname = account_lastname
+    res.locals.accountData.account_email = account_email
+    
+
+    const updatedAccountData = { ...res.locals.accountData } 
+    delete updatedAccountData.iat
+    delete updatedAccountData.exp
+    const accessToken = jwt.sign(updatedAccountData, process.env.ACCESS_TOKEN_SECRET, { expiresIn: 3600 })
+
+    if (process.env.NODE_ENV === 'development') {
+      res.cookie("jwt", accessToken, { httpOnly: true, maxAge: 3600 * 1000 })
+    } else {
+      res.cookie("jwt", accessToken, { httpOnly: true, secure: true, maxAge: 3600 * 1000 })
+    }
+    req.flash("notice", "Account updated successfully")
+    res.status(201).render("account/index", {
+      title: "Account",
+      nav,
+      errors: null,
+      notice: req.flash("notice"),
+      loggedIn: res.locals.loggedin,
+      first_name_user: account_firstname,
+      last_name_user: account_lastname,
+      account_type: res.locals.accountData.account_type
+
+    })
+  } else {
+    req.flash("notice", "Account update failed")
+    res.status(501).render("account/update", {
+      title: "Update Account",
+      nav,
+      errors: null,
+      notice: req.flash("notice"),
+      loggedIn: res.locals.loggedin,
+      account_firstname: res.locals.accountData.account_firstname,
+      account_lastname: res.locals.accountData.account_lastname,
+      account_email: res.locals.accountData.account_email,
+      account_id: res.locals.accountData.account_id
+    })
+  }
+}
+
+
+async function changePassword(req, res) {
+  const { account_password, account_id } = req.body
+  let hashedPassword
+     try {
+       
+       hashedPassword = await bcrypt.hashSync(account_password, 10)
+     } catch (error) {
+       req.flash("notice", 'Sorry, there was an error processing the registration.')
+       res.status(500).render("account/register", {
+         title: "Registration",
+        nav,
+        errors: null,
+        loggedIn: res.locals.loggedin,
+        notice: req.flash("notice"),
+        account_firstname: res.locals.accountData.account_firstname,
+        account_lastname: res.locals.accountData.account_lastname,
+        account_email: res.locals.accountData.account_email,
+        account_id: res.locals.accountData.account_id
+    })
+  }
+  const changePasswordResult = await accountModel.changePassword(hashedPassword, account_id)
+  if (changePasswordResult) {
+    req.flash("notice", "Password updated successfully")
+    res.status(201).redirect("/account/")
+  } else {
+    req.flash("notice", "Password update failed")
+    res.status(501).redirect("/account/update")
+  }
+}
+
+
+
+async function buildUserList(req, res) {
+  let nav = await utilities.getNav()
+  const accountList = await accountModel.getAccountList()
+  const userList = utilities.buildUserList(accountList)
+  res.render("account/user-list", {
+    title: "User List",
+    nav,
+    errors: null,
+    notice: req.flash("notice"),
+    loggedIn: res.locals.loggedin,
+    userList: userList
+  })
+}
+
+
+async function changeRoleView(req, res) {
+  let nav = await utilities.getNav()
+  const account_id = req.params.id
+  const accountData = await accountModel.getAccountById(account_id)
+
+  res.render("account/change-role", {
+    title: "Change Role",
+    nav,
+    account_firstname: accountData.account_firstname,
+    account_lastname: accountData.account_lastname,
+    account_email: accountData.account_email,
+    account_type: accountData.account_type,
+    account_id: account_id
+  })
+}
+
+async function changeRole(req, res) {
+  const { account_type, account_id } = req.body
+  const changeRoleResult = await accountModel.changeRole(account_type, account_id)
+  const accountList = await accountModel.getAccountList()
+  const userList = utilities.buildUserList(accountList)
+  const nav = await utilities.getNav()
+  if (changeRoleResult) {
+
+    if (res.locals.accountData.account_id == account_id) {
+      console.log("Same User")
+      const updatedAccountData = changeRoleResult.rows[0]
+      delete updatedAccountData.iat
+      delete updatedAccountData.exp
+      const accessToken = jwt.sign(updatedAccountData, process.env.ACCESS_TOKEN_SECRET, { expiresIn: 3600 })
+      if (process.env.NODE_ENV === 'development') {
+        res.cookie("jwt", accessToken, { httpOnly: true, maxAge: 3600 * 1000 })
+      } else {
+        res.cookie("jwt", accessToken, { httpOnly: true, secure: true, maxAge: 3600 * 1000 })
+      }
+    }
+    req.flash("notice", "Role updated successfully")
+    res.status(201).render("account/user-list", {
+      title: "User List",
+      nav,
+      errors: null,
+      notice: req.flash("notice"),
+      loggedIn: res.locals.loggedin,
+      userList: userList
+    })
+  } else {
+    req.flash("notice", "Role update failed")
+    res.status(501).render("account/change-role", {
+      title: "Change Role",
+      nav,
+      errors: null,
+      notice: req.flash("notice"),
+      loggedIn: res.locals.loggedin,
+      account_firstname: res.locals.accountData.account_firstname,
+      account_lastname: res.locals.accountData.account_lastname,
+      account_email: res.locals.accountData.account_email,
+      account_type: res.locals.accountData.account_type,
+      account_id: res.locals.accountData.account_id
+    })
+  }
+}
+
+
+
+
+
+
+
+
+
+module.exports = { buildLogin, buildRegister, registerAccount, buildAccount , accountLogin, accountLogout, updateAccountView, updateAccount, changePassword, buildUserList, changeRoleView, changeRole}

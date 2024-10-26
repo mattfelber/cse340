@@ -1,17 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
-<%- include('../partials/head') %> <!-- Include head only once -->
-
-<body>
-    <div id="wrapper">
-        <%- include('../partials/header', { loggedIn, userFirstName }) %> <!-- Pass loggedIn state and userFirstName to the header -->
-        <%- include('../partials/navigation', { nav }) %> <!-- Pass navigation once here -->
-
-        <main>
-            <%- body %> <!-- Render main body content -->
-        </main>
-
-        <%- include('../partials/footer') %> <!-- Include footer once -->
+  <%- include('../partials/head') %>
+  <body>
+    <div id="wrapper" class="wrapper"> 
+      <%- include('../partials/header') %>
+      <%- include('../partials/navigation') %>
+      <main>
+        <!-- <% if (typeof notice !== 'undefined') { %>
+          <div class="notice">
+            <%= notice %>
+          </div>
+        <% } %> -->
+        <%- body %>
+      </main>
+      <%- include('../partials/footer') %>
     </div>
-</body>
+  </body>
 </html>

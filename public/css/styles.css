@@ -1,555 +1,642 @@
-/******* Change Box Model ***************/
-*,
-*:before,
-*:after {
-  box-sizing: border-box;
-}
+/* Estilos base para dispositivos móviles */
 
-/* Box*/
-#wrapper {
-  background-color: white;
-  border: solid 0.25rem #FF3B30;
-  border-radius: 1rem;
-  padding: 2rem;
-}
-
-/* body */
-body {
+* {
   margin: 0;
-  background-image: url(/images/site/checkerboard.jpg);
-  background-repeat: repeat;
-  background-size: 30rem;
-  background-position: top left;
-  padding: 5% 8%;
+  padding: 0;
+  box-sizing: border-box;
+  overflow-x: hidden;
 }
 
-h1 {
-  font-family: 'Rubik', sans-serif;
-  font-size: 40px;
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f0f0f0;
 }
 
-h2 {
-  font-family: 'Rubik', sans-serif;
-  font-size: 30px;
+main h1 {
+  text-align: center;
 }
 
-h3 {
-  font-family: 'Roboto Mono', sans-serif;
-  font-size: 30px;
+.wrapper {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: auto auto 1fr auto;
+  gap: 10px;
+  padding: 10px;
 }
 
-ul, a, button, p {
-  font-family: 'Roboto Mono', sans-serif;
-  font-size: 20px;
-}
-
-/* Header */
 header {
+  background-color: #333;
+  color: white;
+  padding: 10px;
+  text-align: center;
+}
+
+
+/* Navigation #########################################################################################*/
+
+nav {
   display: flex;
   justify-content: space-between;
   align-items: center;
-}
-
-.siteName a {
-  text-decoration: none;
-  color: rgb(48, 48, 48);
-  text-transform: uppercase;
-  font-size: 50px;
-}
-
-#tools a {
-  text-decoration: none;
-  color: rgb(48, 48, 48);
-  text-transform: uppercase;
-}
-
-/* Navigation */
-nav {
-  background-color: rgb(48, 48, 48);
+  background-color: #4c4c4c;
 }
 
 nav ul {
-  list-style: none;
-  padding: 1rem 0.5rem;
   display: flex;
-  justify-content: space-between;
+  list-style-type: none;
+  padding: 10px 0;
+  justify-content: space-around;
+  width: 100%;
 }
 
-nav ul li a{
+nav ul li {
+  padding: 5px 10px;
+}
+
+nav ul li a {
+  color: white;
   text-decoration: none;
-  color: white;
-  padding: 0.5rem;
-  text-align: center;
-  margin: auto;
-  cursor: pointer;
-}
-
-/* Hero */
-.hero {
-  display: flex;
-  position: relative;
-  margin-bottom: 5rem;
-}
-
-.heroLeft {
-  margin-left: 6rem;
-  padding: 1rem;
-  background-color: rgb(255, 255, 255, 0.9);
-  border-radius: 1rem;
-  z-index: 2;
-}
-
-.heroLeft h2 {
-  color: #FF3B30;
-}
-
-.heroLeft ul {
-  list-style: none;
-  padding: 0;
-}
-
-.heroLeft ul li {
-  color: black;
-}
-
-button {
   font-weight: bold;
-  background-color: #FF3B30;
-  border-radius: 1rem;
-  border: none;
-  padding: 0.5rem 2rem;
-  cursor: pointer;
-  color: white;
-  text-shadow: 
-  -0.5px -0.5px 0 black,  
-  0.5px -0.5px 0 black,
-  -0.5px 0.5px 0 black,
-  0.5px 0.5px 0 black;
+  display: block;
+  text-align: center;
 }
 
-.heroRight {
+
+
+.account {
+  text-align: center;
+  margin-top: 10px;
+}
+
+.hero {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+  background-color: white;
+  padding: 10px;
+  margin-top: 10px;
+}
+
+.hero-title {
+  font-size: 1.5em;
+  margin-bottom: 10px;
+}
+
+.hero-text {
+  background-color: rgba(255, 255, 255, 0);
+  padding: 5px;
+  margin-bottom: 10px;
+  z-index: 1;
+  max-width: 200px;
   position: absolute;
-  left: 25%;
+  margin-top: 2rem;
 }
 
-.heroRight img {
-  width: 35rem;
+.hero-text h2 {
+  color: #3cc4dc;
+  margin-bottom: 5px;
+}
+
+.cta-button {
+  display: inline-block;
+  background-color: #3cc4dc;
+  color: white;
+  padding: 5px 10px;
+  text-decoration: none;
+  border-radius: 5px;
+  margin-top: 10px;
+}
+
+.hero-image img {
+  max-width: 100%;
   height: auto;
-  object-fit: contain;
 }
 
-/* details */
-.details {
-  display: flex;
+.delorean-info {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 20px;
+  margin-top: 20px;
 }
 
-.detailsLeft {
-  width: 50%;
+.delorean-info-title{
+  font-size: 1.2em;
+  margin-bottom: 10px;
+}
+.reviews-info-title {
+  font-size: 1.2em;
+  margin-bottom: 10px;
+  grid-row: 1/2;
 }
 
 .upgrades {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
 }
 
-.upgrade {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+.upgrade-item {
+  background-color: #3cc4dc;
+  padding: 10px;
+  border-radius: 5px;
   text-align: center;
-  margin: 0.5rem;
 }
 
-.upgrade img {
-  width: 10rem;
-  height: 6rem;
-  background-color: #FF3B30;
-  padding: 1rem 3rem;
-  border: solid 0.1rem black;
-  object-fit: contain;
+.upgrade-item img {
+  max-width: 80px;
+  height: auto;
 }
 
-.detailsRight ul li {
-  margin: 1rem 0;
+.upgrade-item p {
+  margin-top: 5px;
+  color: #0056b3;
+  font-weight: bold;
 }
 
-/* Inventory Display */
+.reviews{
+  grid-row: 2/3;
+}
+
+.reviews ul {
+  list-style-type: none;
+  padding-left: 0;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+}
+
+.reviews li {
+  margin-bottom: 10px;
+}
+
+footer {
+  background-color: #333;
+  color: white;
+  text-align: center;
+  padding: 10px;
+  margin-top: 20px;
+}
+
+
+
+/* Inventory Display #########################################################################################*/
 #inv-display {
-  list-style: none;
-  padding: 0;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 20px;
 }
 
 #inv-display li {
-  padding: 1rem;
-  margin: 2rem;
-  border: solid 0.25rem black;
-  border-radius: 1rem;
-  width: 20rem;
-  overflow: hidden;
-  text-align: center;
-}
-
-#inv-display a {
+  list-style: none;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 15px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   width: 100%;
-}
-
-#inv-display img{
-  width: 100%;
-  height: auto;
-  display: block;
-  border-radius: 0.5rem;
-}
-
-hr {
-  border-width: 6px;
-}
-
-/* Details View */
-.details-display {
   display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-#detailsLeft,
-#detailsRight {
-  margin: 1rem;
-  padding: 0.5rem;
-}
-
-.details-display a {
-  text-decoration: none;
-  color: inherit;
-  cursor: default;
-}
-
-#detailsLeft {
+#inv-display li img {
   width: 100%;
   height: auto;
-  overflow: hidden;
+  object-fit: contain;
+  margin-bottom: 10px;
 }
 
-#detailsLeft img {
-  max-width: 100%;
+#inv-display .namePrice {
+  text-align: center;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex-grow: 1;
+}
+
+#inv-display .namePrice hr {
+  width: 100%;
+  margin: 10px 0;
+}
+
+#inv-display .namePrice h2 {
+  margin: 0;
   height: auto;
+  overflow: visible;
+  font-size: 1.2em;
+}
+
+#inv-display .namePrice span {
   display: block;
+  margin-top: 10px;
 }
 
-/* Login */
-.userForm {
-  padding: 1rem;
-  border-radius: 1rem;
-  background-color: #FF3B30;
-  max-width: 30rem;
-  margin: auto;
+/* vehicle Detail #########################################################################################*/
+.vehicle-detail {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  background-color: white;
+  padding: 20px;
+  border-radius: 10px;
 }
 
-.userInfo {
+.vehicle-detail img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  border-radius: 5px;
+}
+
+.vehicle-detail .description {
+  order: 2;
+  text-align: center;
+  padding: 10px;
+  background-color: #f5f5f5;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  font-size: 1.1em;
+  line-height: 1.6;
+  color: #333;
+  text-align: center;
+  height: auto;
+  min-height: 100%;
   display: flex;
   flex-direction: column;
 }
 
-.userInfo label {
-  font-family: 'Roboto Mono', sans-serif;
-  font-size: 20px;
-}
-
-.userInfo input,
-.userInfo textarea,
-.userInfo select {
-  width: 96%;
-  height: 3rem;
-  padding: 0.5rem;
-  margin: 0.25rem 0;
-  border-radius: 1rem;
-  font-family: 'Roboto Mono', sans-serif;
-  font-size: 20px;
-}
-
-.userInfo textarea {
-  height: 10rem;
-}
-
-.userForm button{
-  background-color: rgb(199, 199, 199);
-  margin: 1rem 0;
-  color:rgb(48, 48, 48);
-  text-shadow: none;
-  width: 96%;
-}
-
-.popup {
-  display: none;
-}
-
-#popBtn:hover + .popup {
-  display: block;
-}
-
-/* Register */
-#passButton button{
-  width: 3rem;
-  height: 3rem;
-  padding: 0.25rem;
-  margin: 0.25rem;
-}
-
-#passButton {
+.vehicle-detail .details {
+  order: 3;
+  text-align: center;
+  padding: 10px;
+  background-color: #e6f7ff;
+  border-radius: 8px;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+  font-size: 1.1em;
+  color: #333;
   display: flex;
+  flex-direction: column;
+  justify-content: space-around;
 }
 
-/* Management */
-.userInfo button {
-  background-color: rgb(199, 199, 199);
-  margin: 1rem 0;
-  max-width: 30rem;
+.vehicle-detail h2 {
+  order: 1;
+  text-align: center;
 }
 
-.userInfo a {
-  text-decoration: none;
-  color:rgb(48, 48, 48);
-  text-shadow: none;
+.notice {
+  color: #e05858;
+  font-size: 20px;
+  margin: 10px;
+  list-style-type: disclosure-closed;
 }
 
-/* Responsive */
-@media (max-width: 1600px) {
-   .upgrade img {
-    margin: 0 1rem;
-  }
-}
-
-@media (max-width: 1024px) {
-  .upgrade img {
-    margin: 0 0.5rem;
-    width: 8rem;
-    padding: 1rem 2rem;
+/* Responsive Design ########################################################################################################################################################################*/
+/* Estilos para resoluciones grandes */
+@media screen and (min-width: 768px) {
+  
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
   }
 
-  .heroRight {
-    left: 35%;
+  body {
+    font-family: Arial, sans-serif;
+    background-image: url('/images/site/checkerboard.jpg'); 
+    background-size: contain; 
+    background-repeat: repeat; 
+  }
+
+  .wrapper {
+    max-width: 1200px; 
+    margin: 0 auto;
+    padding: 20px;
+    background-color: white;
+    border: 5px solid #3cc4dc; 
+    border-radius: 10px; 
+  }
+
+  /* Header Styles */
+  header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    background-color: #333; 
+    color: white; 
+  }
+
+  
+
+  /* Navigation Styles */
+  nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #4c4c4c;
   }
   
-  .heroRight img {
-    width: 30rem;
-  }
-
-  .details {
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .detailsLeft {
+  nav ul {
+    display: flex;
+    list-style-type: none;
+    padding: 10px 0;
+    justify-content: space-around;
     width: 100%;
   }
-
-  .detailsLeft h2, 
-  .detailsRight h2 {
+  
+  nav ul li {
+    padding: 5px 10px;
+  }
+  
+  nav ul li a {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    display: block;
     text-align: center;
   }
 
-  .upgrades {
-    justify-content: center;
-  }
-    
-  .upgrade img {
-    width: 12rem;
-    height: 8rem;
-    padding: 1rem 3rem;
-    margin: 0 4rem;
+
+
+  .account {
+    font-size: 16px;
+    color: white;
   }
 
-  .details-display {
-    flex-direction: column;
-  }
-}
-
-@media (max-width: 820px) {
-  body {
-  padding: 8% 12%;
+  /* Main Section */
+  main {
+    display: grid;
+    grid-template-columns: 1fr; 
+    gap: 20px; 
   }
 
-  .heroLeft {
-    margin-left: 2rem;
-  }
-
-  .heroRight {
-    left: 33%;
-  }
-  
-  .heroRight img {
-    width: 25rem;
-  }
-
-  .upgrade img {
-    margin: 0 2rem;
-  }
-
-  .detailsLeft {
-    margin-bottom: 3rem;
-  }
-}
-
-@media (max-width: 768px) {
-  .heroRight {
-    left: 35%;
-  }
-  
-  .heroRight img {
-    width: 23rem;
-  }
-}
-
-@media (max-width: 625px) {
-  body {
-    padding: 10% 12%;
-  }
-  
-  .heroRight {
-    left: 42%;
-    top: 34%;
-  }
-  
-  .heroRight img {
-    width: 18rem;
-  }
-
-  .passRequirement h3{
-    font-size: 20px;
-  }
-
-  .passRequirement li{
-    font-size: 15px;
-  }
-}
-
-@media (max-width: 430px) {
-  #wrapper {
-    border: none;
-  }
-  
-  body {
-    margin: 0;
-    padding: 1.5rem;
-    background-image: none;
+  /* Hero Section */
+  .hero {
+    display: grid;
+    grid-template-rows: 1fr;
+    grid-template-columns: repeat(7, 1fr);
+    align-items: center;
     background-color: white;
+    padding: 20px;
+    border-radius: 10px;
   }
 
-  html {
-    font-size: 30%
+  .hero-title {
+    grid-column: 1/3;
   }
 
-  h1 {
-    font-size: 30px;
-  }
-  
-  h2 {
-    font-size: 25px;
-  }
-  
-  ul, a, button, p {
-    font-size: 20px;
-  }
-
-  nav ul li a {
-    font-size: 14px;
+  .hero-text {
+    grid-row: 2/3;
+    grid-column: 2/4;
+    z-index: 1;
+    background-color: rgba(255, 255, 255, 0.7);
+    padding: 10px;
+    border-radius: 5px;
+    margin-left: 3.5rem;
+    width: 15rem;
+    text-align: center;
+    position: relative;
   }
 
-  .siteName a {
-    font-size: 30px;
+  .hero-text h2 {
+    font-size: 1.5em; 
+    color: #3cc4dc; 
+    margin-bottom: 5px;
   }
 
-  .heroRight {
-    left: 44%;
-    top: 10%;
-  }
-  
-  .heroRight img {
-    width: 45rem;
+  .hero-text p {
+    font-size: 1em; 
+    color: black;
+    margin-bottom: 20px;
   }
 
-  .heroLeft {
-    margin-left: 4rem;
+  .cta-button {
+    padding: 10px 20px;
+    background-color: #3cc4dc;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: bold;
+    font-size: 1.2em;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   }
 
-  .detailsLeft {
-    width: 100%;
+  .cta-button:hover {
+    background-color: #0f7486;
   }
 
-  .detailsLeft, 
-  .detailsRight {
-    margin: 4rem 0;
+  .hero-image {
+    grid-row: 2/3;
+    grid-column: 3/6;
+  }
+
+  .hero-image img {
+    max-width: 700px;
+    height: auto;
+  }
+
+  /* Delorean Info Section */
+  .delorean-info {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
   }
 
   .upgrades {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    gap: 20px;
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    grid-column: 1/2;
+  }
+
+  .delorean-info-title {
+    grid-column: 1/3;
+    grid-row: 1/2;
+  }
+
+  .upgrade-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center; 
+    justify-content: center;
+    background-color: #3cc4dc; 
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
+  }
+
+  .upgrade-item img {
+    width: 100px;
+    height: auto;
+    margin-bottom: 10px;
+  }
+
+  .upgrade-item p {
+    font-size: 1.1em;
+    font-weight: bold;
+    color: #0056b3;
+    text-align: center;
+    margin: 0;
+  }
+
+  .reviews-info-title {
+    grid-row: 1/2;
+    grid-column: 2/3;
+  }
+
+  .reviews {
+    padding: 20px;
+    grid-column: 2/3;
+  }
+
+  .reviews li {
+    margin-bottom: 2rem;
+  }
+
+  /* Footer */
+  footer {
+    text-align: center;
+    padding: 10px;
+    background-color: #333;
+    color: white;
+    margin-top: 20px;
+  }
+
+
+  /* Inventory Display #########################################################################################*/
+  #inv-display {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+
+  #inv-display li {
+    list-style: none;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 15px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    width: 300px;
+    display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    margin-left: auto;
+    margin-right: auto;
   }
 
-  .upgrade img {
-    width: 30rem;
-    height: 20rem;
-    margin: 4rem 4rem;
+  #inv-display li img {
+    width: 200px;
+    height: 150px;
+    object-fit: contain;
+    margin-bottom: 10px;
   }
 
-  #inv-display {
-    flex-wrap: nowrap;
+  #inv-display .namePrice {
+    text-align: left;
+    width: 100%;
+    display: flex;
     flex-direction: column;
+    justify-content: space-between;
+    flex-grow: 1;
   }
-  
-  #inv-display li {
+
+  #inv-display .namePrice hr {
     width: 100%;
+    margin: 10px 0;
   }
-  
-  #inv-display a {
-    width: 100%;
+
+  #inv-display .namePrice h2 {
+    margin: 0;
+    height: 2.4em;
+    overflow: hidden;
+    font-size: 1.2em;
   }
-  
-  #inv-display img{
+
+  #inv-display .namePrice span {
+    display: block;
+    margin-top: auto;
+  }
+
+  /* vehicle Detail #########################################################################################*/
+  .vehicle-detail {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+  }
+
+  .vehicle-detail img {
     width: 100%;
     height: auto;
-    display: block;
-    border-radius: 0.5rem;
+    object-fit: cover;
+    border-radius: 5px;
+    grid-column: 1 / 2;
+    grid-row: 2 / 4;
   }
 
-  .userForm {
-    padding: 2rem;
-    max-width: 60rem;
+  .vehicle-detail .description {
+    grid-column: 2 / 3;
+    grid-row: 2 / 3;
+    padding: 15px;
+    background-color: #f5f5f5;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    font-size: 1.1em;
+    line-height: 1.6;
+    color: #333;
+    text-align: center;
+    height: auto;
+    min-height: 100%;
+    display: flex;
+    flex-direction: column;
   }
 
-  #passButton input {
-    width: 78%;
+  .vehicle-detail .details {
+    grid-column: 2 / 3;
+    grid-row: 3 / 4;
+    padding: 15px;
+    background-color: #e6f7ff;
+    border-radius: 8px;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+    font-size: 1.1em;
+    color: #333;
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
   }
 
-  #passButton button {
-    width: 8rem;
-    height: 8rem;
-    margin: 0.25rem 1rem;
+  .vehicle-detail .details p {
+    margin: 10px 0;
+    padding: 5px;
+    border-bottom: 1px solid #ccc;
   }
 
-  .userInfo input,
-  .userInfo select {
-    height: 8rem;
+  .vehicle-detail .details strong {
+    color: #0056b3;
+    font-weight: bold;
   }
 
-  .userInfo textarea {
-    height: 20rem;
+  .vehicle-detail h2 {
+    grid-column: 1 / -1;
+    grid-row: 1 / 2;
+    text-align: center;
   }
-}
 
-@media (max-width: 375px) {
-  .heroRight {
-    left: 45%;
-    top: 45%;
+
+
   }
+
   
-  .heroRight img {
-    width: 40rem;
-  }
 
-  #tools a {
-    font-size: 15px;
-  }
-}
+
+
+
+

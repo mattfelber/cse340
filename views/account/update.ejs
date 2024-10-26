@@ -1,24 +1,58 @@
-<h1>Update Account Information</h1>
-<form action="/account/update" method="POST">
-  <label for="firstName">First Name:</label>
-  <input type="text" name="firstName" value="<%= firstName %>">
+<% if (title) { %>
+    <h1><%= title %></h1>
+    <% } else {
+      res.redirect('/')
+    } %>
 
-  <label for="lastName">Last Name:</label>
-  <input type="text" name="lastName" value="<%= lastName %>">
+    <% if (errors) { %>
+      <ul class="notice">
+     <% errors.array().forEach(error => { %>
+       <li><%= error.msg %></li>
+    <%  }) %>
+     </ul>
+  <% } %>
 
-  <label for="email">Email:</label>
-  <input type="email" name="email" value="<%= email %>">
+    <% if (notice) { %>
+        <div class="alert alert-warning">
+          <%= notice %>
+        </div>
+    <% } %>
+      
 
-  <input type="hidden" name="accountId" value="<%= accountId %>">
-  <input type="submit" value="Update">
-</form>
+    <div class="add-inventory-container">
+        <h2>Edit Account Information</h2>
+        <form id="editAccountForm" action="/account/update" method="post" class="form-add-inventory">
+            <div class="form-group">
+                <label for="account_firstname">First Name</label>
+                <input type="text" id="account_firstname" name="account_firstname" value="<%= locals.account_firstname %>" required placeholder="First Name">
+            </div>
+            <div class="form-group">
+              <label for="account_lastname">Last Name</label>
+              <input type="text" id="account_lastname" name="account_lastname" value="<%= locals.account_lastname %>" required  placeholder="Last Name">
+            </div>
+            <div class="form-group">
+              <label for="account_email">Email</label>
+              <input type="email" id="account_email" name="account_email" value="<%= locals.account_email %>" required placeholder="Email">
+            </div>
+           
+            <input type="hidden" name="account_id" id="account_id" <% if(locals.account_id) { %> value="<%= locals.account_id %>" <% } %>>
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary" >Update Account</button>
+            </div>
+        </form>
+        <h2>Change Password</h2>
+        <form id="changePasswordForm" action="/account/change-password" method="post" class="form-add-inventory">
+           
+            <div class="form-group">
+              <label for="password"> New Password:</label>
+              <input type="password" id="account_password" name="account_password" required pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{12,}$" title="Password does not meet the requirements">
+            </div>
+       
+            <input type="hidden" name="account_id" id="account_id"  <% if(locals.account_id) { %> value="<%= locals.account_id %>" <% } %>>
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary">Update Password</button>
+            </div>
+        </form>
+    </div>
 
-<h1>Change Password</h1>
-<form action="/account/change-password" method="POST">
-  <label for="newPassword">New Password:</label>
-  <input type="password" name="newPassword" required>
-  <input type="hidden" name="accountId" value="<%= accountId %>">
-  <input type="submit" value="Change Password">
-</form>
 
-<%- include('../partials/footer') %>
