@@ -1,9 +1,30 @@
 <% if (title) { %>
-    <h1><%= title %></h1>
-    <% } else {
-      res.redirect('/')
-    } %>
+  <h1><%= title %></h1>
+  <% } else {
+    res.redirect('/')
+  } %>
 
-    <%# messages() %>
+<%- vehicleDetail %>  <!-- Displaying the vehicle details here -->
 
-<%- vehicleDetail %>
+<button class="favorite-button" onclick="addToFavorites('<%= vehicleDetail.inv_id %>')">Add to Favorites</button>
+
+<script>
+  function addToFavorites(invId) {
+      fetch('/favorites/add', {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ invId })
+      })
+      .then(response => response.json())
+      .then(data => {
+          if (data.message === 'Added to favorites') {
+              alert('Item added to favorites');
+          } else {
+              alert('Failed to add item to favorites');
+          }
+      })
+      .catch(error => console.error('Error:', error));
+  }
+</script>

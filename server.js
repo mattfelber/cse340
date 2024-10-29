@@ -18,6 +18,10 @@ const baseController = require("./controllers/baseController")
 const inventoryRoute = require("./routes/inventoryRoute")
 const accountRoute = require("./routes/accountRoute")
 const utilities = require("./utilities/")
+const favoritesRoute = require('./routes/favoritesRoute');
+app.use('/favorites', favoritesRoute); //final enhancement
+
+
 
 app.set("view engine", "ejs")
 app.use(expressLayouts)

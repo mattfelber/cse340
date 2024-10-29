@@ -1,0 +1,30 @@
+<h2>Your Favorites</h2>
+<ul>
+    <% favorites.forEach(favorite => { %>
+        <li>
+            <%= favorite.inv_make %> <%= favorite.inv_model %> (<%= favorite.inv_year %>)
+            <button onclick="removeFavorite('<%= favorite.inv_id %>')">Remove</button>
+        </li>
+    <% }) %>
+</ul>
+
+<script>
+    function removeFavorite(invId) {
+        fetch('/favorites/remove', {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ invId })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.message === 'Removed from favorites') {
+                location.reload();
+            } else {
+                alert('Failed to remove favorite');
+            }
+        })
+        .catch(error => console.error('Error:', error));
+    }
+</script>
